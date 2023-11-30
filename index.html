@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Clock</title>
+</head>
+<body style="background-color: grey;">
+    <canvas id="canvas_" style="border: 1px solid black;" width="960px" height="960px"></canvas>
+    <img id="clock" src="clock face.png" alt="" style="display: none;">
+    <script>
+        const canvas=document.getElementById("canvas_");
+        const context=canvas.getContext("2d");
+        const clock_face=document.getElementById("clock");
+        const r_sec=320; const r_min=280; const r_hour=200;
+        var total_seconds=0; var total_minutes=0; var total_hours=0;
+
+
+        window.onload=function(){
+            context.drawImage(clock_face,0,0);
+            drawSeconds();
+            drawMinutes();
+            drawHours();
+        }
+
+        function drawSeconds(){
+            //second hand
+            context.beginPath();
+            context.moveTo(480,480);
+            context.lineTo(480+r_sec*Math.cos(6*total_seconds*Math.PI/180),480+r_sec*Math.sin(6*total_seconds*Math.PI/180));
+            context.strokeStyle="red";
+            context.lineWidth=5;
+            context.stroke();
+        }
+
+        function drawMinutes(){
+            //minute hand
+            context.beginPath();
+            context.moveTo(480,480);
+            context.lineTo(480+r_min*Math.cos(6*total_minutes*Math.PI/180),480+r_min*Math.sin(6*total_minutes*Math.PI/180));
+            context.strokeStyle="black";
+            context.lineWidth=10;
+            context.stroke();
+        }
+
+        function drawHours(){
+            //hour hand
+            context.beginPath();
+            context.moveTo(480,480);
+            context.lineTo(480+r_hour*Math.cos(30*total_hours*Math.PI/180),480+r_hour*Math.sin(30*total_hours*Math.PI/180));
+            context.strokeStyle="black";
+            context.lineWidth=20;
+            context.stroke();
+        }
+
+        setInterval(() => {
+            context.clearRect(0,0,canvas.width,canvas.height);
+            context.drawImage(clock_face,0,0);
+            total_seconds++;
+            total_minutes=total_seconds/60;
+            total_hours=total_minutes/60;
+            drawSeconds();
+            drawMinutes();
+            drawHours();
+        }, 1000);
+    </script>
+</body>
+</html>
