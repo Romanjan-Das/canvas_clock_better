@@ -20,7 +20,9 @@
 
         window.onload=function(){
             context.drawImage(clock_face,0,0);
-            total_seconds=current_hour*3600+current_minute*60+current_second;
+            total_seconds=current_second;
+            total_minutes=current_minute;
+            total_hours=current_hour;
             drawSeconds();
             drawMinutes();
             drawHours();
@@ -60,8 +62,17 @@
             context.clearRect(0,0,canvas.width,canvas.height);
             context.drawImage(clock_face,0,0);
             total_seconds++;
-            total_minutes=total_seconds/60;
-            total_hours=total_minutes/60;
+            if(total_seconds==60){
+                total_seconds=0;
+                total_minutes++;
+            }
+            if(total_minutes==60){
+                total_minutes=0;
+                total_hours++;
+            }
+            if(total_hours==12){
+                total_hours=0;
+            }
             drawSeconds();
             drawMinutes();
             drawHours();
