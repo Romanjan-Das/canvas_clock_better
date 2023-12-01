@@ -10,7 +10,7 @@
     <img id="clock" src="clock face.png" alt="" style="display: none;">
     <script>
         const date=new Date(); const current_second=date.getSeconds(); const current_minute=date.getMinutes(); const current_hour=date.getHours();
-        console.log(current_hour,current_minute,current_second);
+        var adjusted_current_hour=0;
         const canvas=document.getElementById("canvas_");
         const context=canvas.getContext("2d");
         const clock_face=document.getElementById("clock");
@@ -20,14 +20,18 @@
 
         window.onload=function(){
             context.drawImage(clock_face,0,0);
-            total_seconds=current_second;
-            total_minutes=current_minute;
             if(current_hour>12){
-                total_hours=current_hour-12;
+                adjusted_current_hour=current_hour-12;
             }
             else{
-                total_hours=current_hour;
+                adjusted_current_hour=current_hour;
             }
+            total_seconds=adjusted_current_hour*3600+current_minute*60+current_second;
+            if(total_seconds==43200){
+                total_seconds=0;
+            }
+            total_minutes=total_seconds/60;
+            total_hours=total_minutes/60;
             drawSeconds();
             drawMinutes();
             drawHours();
@@ -67,17 +71,11 @@
             context.clearRect(0,0,canvas.width,canvas.height);
             context.drawImage(clock_face,0,0);
             total_seconds++;
-            if(total_seconds==60){
+            if(total_seconds==43200){
                 total_seconds=0;
-                total_minutes++;
             }
-            if(total_minutes==60){
-                total_minutes=0;
-                total_hours++;
-            }
-            if(total_hours==12){
-                total_hours=0;
-            }
+            total_minutes=total_seconds/60;
+            total_hours=total_minutes/60;
             drawSeconds();
             drawMinutes();
             drawHours();
